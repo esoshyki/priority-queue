@@ -17,15 +17,15 @@ class Node {
 		else  { 
 		this.right = node;	
 		}
-		
+		node.parent = this;
 	}
 
 	removeChild(node) {
 		if (this.left == node) {
-			this.left = null
+			this.left = null;
 		}
 		else if (this.right == node) {
-			this.right = null
+			this.right = null;
 		}
 		else if (node.parent != this) {
 			throw('Node is not child of it');
@@ -38,7 +38,13 @@ class Node {
 			return
 		}
 		else {	
-			this.parent.removeChild(this)
+			this.parent.removeChild(this);
+		}
+		if (this.left) {
+			this.left.parent = null;
+		}
+		if (this.right) {
+			this.right.parent = null;
 		}
 	}
 			
