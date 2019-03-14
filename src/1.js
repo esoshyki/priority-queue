@@ -10,14 +10,15 @@ class Node {
 
 	appendChild(node) {
 		if (!this.left) {
-		this.left = node; }
+            this.left = node;
+         }
 		else if (this.left && this.right) {
 			return
 		}
 		else  { 
 		this.right = node;	
 		}
-		
+
 	}
 
 	removeChild(node) {
@@ -38,7 +39,7 @@ class Node {
 			return
 		}
 		else {	
-			this.parent.removeChild(this)
+			console.log(this.data);
 		}
 	}
 			
@@ -56,4 +57,8 @@ class Node {
 	}
 }
 
-module.exports = Node;
+var a = new Node(4, 24);
+var b = new Node(3, 22);
+a.appendChild(b);
+console.log(b.parent);
+b.remove();
