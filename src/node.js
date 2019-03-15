@@ -30,9 +30,9 @@ class Node {
 		else if (node.parent != this) {
 			throw('Node is not child of it');
 		};
-		}
-	
-
+		node.parent =null;
+}
+		
 	remove() {
 		if (!this.parent) {
 			return
@@ -53,12 +53,33 @@ class Node {
 		if (!this.parent) {
 			return
 		}
-		if (this.parent.parent.left == this.parent) {
-			this.parent.parent.left = this;
+		var node = this;
+		if (this.parent.left == this) {
+			var temp = new Node(this.data, this.priority);
+			temp.parent = this.parent;
+			temp.left = this.left;
+			temp.right = this.right;
+			this.parent.parent = this;
+			if (this.parent.right) {
+				this.parent.right.parent = this;
+			}
+			this.parent.left = this.left;
+			this.parent.right = this.right;
+			node = temp;
 		}
-		if (this.parent.parent.right == this.parent) {
-			this.parent.parent.right = this;
-		}
+		if (this.parent.right == this) {
+			var temp = new Node(this.data, this.priority);
+			temp.parent = this.parent;
+			temp.left = this.left;
+			temp.right = this.right;
+			this.parent.parent = this;
+			if (this.parent.left) {
+				this.parent.left.parent = this;
+			}
+			this.parent.left = this.left;
+			this.parent.right = this.right;
+			node = temp;
+		}		
 	}
 }
 
