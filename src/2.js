@@ -56,50 +56,35 @@ class Node {
 		if (!this.parent) {
 			return
 	}
-	let TrueParent = this.parent;
-	let Parent = new Node;
-	Parent.Clone(this.parent);
-	let Child = new Node;
-	Child.Clone(this);
-	if (this.parent.parent) {
-		let grandparent = this.parent.parent;
-		if (grandparent.left == this.parent) {
-			grandparent.left = this;
-			this.parent = grandparent;
-		}
-		else if (grandparent.right == this.parent) {
-			grandparent.right = this;
-			this.parent = grandparent;
-		}
-
-	if (Parent.left == this ) {
-		console.log('here')
+	/* Эта хуйня решает updates parent.parent 
+	updates parent.parent.parent
+	updates child.parent*/
+	let childCopy = new Node;
+	childCopy.Clone(this);
+	let Parent = this.parent;
+	
+	if (Parent.left == this) {
 		this.left = Parent;
-		this.right = Parent.right;
-		if (Parent.right) {
-		Parent.right.parent = this;}
-		Parent.parent = this;
+		this.right = Parent.right; 
+		if (this.right) { this.right.parent = this}
 	}
-	else if (Parent.right == this) {
+	else {
 		this.right = Parent;
 		this.left = Parent.left;
-		if (Parent.left) {
-		Parent.left.parent = this;}
-		Parent.parent = this;
-	}
-
-	Parent.left = Child.left;
-	if (Child.left) {
-	Child.left.parent = Parent;
+		if (this.left) { this.left.parent = this}
 	}
 	
-	Parent.right = Child.right;
-	if (Child.right) {
-	Child.right.parent = Parent;
-	}	
+	this.parent = Parent.parent
+	Parent.left = childCopy.left;
+	Parent.right = childCopy.right;
+	
+	if (Parent.left) {
+		Parent.left.parent = Parent
 	}
-	TrueParent = Parent;
-	console.log(TrueParent)
+	if (Parent.right) {
+		Parent.right.parent = Parent
+	}
+	Parent.parent = this
 }
 Clone(node) {
 	this.data = node.data;
@@ -108,18 +93,23 @@ Clone(node) {
 	this.right = node.right;
 	this.parent = node.parent;
 	}
-
 }
+const root = new Node(15, 42);
+const left = new Node(42, 15);
+const right = new Node(13, 42);
+const childOfLeft = new Node(13, 34);
+const childOfRight = new Node(0, 1);
 
-const root = new Node(8, 8);
-const child = new Node(4, 4);
-const grandson = new Node(2, 2);
+root.appendChild(left);
+root.appendChild(right);
+left.appendChild(childOfLeft);
+right.appendChild(childOfRight);
 
-root.appendChild(child);
-child.appendChild(grandson);
-
-grandson.swapWithParent();
-
-console.log(child.parent == grandson)
+childOfLeft.swapWithParent();
+childOfRight.swapWithParent();
+console.log(root.left);
+console.log(childOfLeft);
+console.log(root.left == childOfLeft)
+console.log(root.right == childOfRight)
 
 

@@ -52,35 +52,47 @@ class Node {
 	swapWithParent() {
 		if (!this.parent) {
 			return
-		}
-		var node = this;
-		if (this.parent.left == this) {
-			var temp = new Node(this.data, this.priority);
-			temp.parent = this.parent;
-			temp.left = this.left;
-			temp.right = this.right;
-			this.parent.parent = this;
-			if (this.parent.right) {
-				this.parent.right.parent = this;
-			}
-			this.parent.left = this.left;
-			this.parent.right = this.right;
-			node = temp;
-		}
-		if (this.parent.right == this) {
-			var temp = new Node(this.data, this.priority);
-			temp.parent = this.parent;
-			temp.left = this.left;
-			temp.right = this.right;
-			this.parent.parent = this;
-			if (this.parent.left) {
-				this.parent.left.parent = this;
-			}
-			this.parent.left = this.left;
-			this.parent.right = this.right;
-			node = temp;
-		}		
 	}
+	/* Эта хуйня решает updates parent.parent 
+	updates parent.parent.parent
+	updates child.parent*/
+	let childCopy = new Node;
+	childCopy.Clone(this);
+	let Parent = this.parent;
+	
+	if (Parent.left == this) {
+		this.left = Parent;
+		this.right = Parent.right; 
+		if (this.right) { this.right.parent = this}
+	}
+	else {
+		this.right = Parent;
+		this.left = Parent.left;
+		if (this.left) { this.left.parent = this}
+	}
+	
+	this.parent = Parent.parent
+	Parent.left = childCopy.left;
+	Parent.right = childCopy.right;
+	
+	if (Parent.left) {
+		Parent.left.parent = Parent
+	}
+	if (Parent.right) {
+		Parent.right.parent = Parent
+	}
+	Parent.parent = this
+
 }
+Clone(node) {
+	this.data = node.data;
+	this.priority = node.priority;
+	this.left = node.left;
+	this.right = node.right;
+	this.parent = node.parent;
+	}
+
+}
+
 
 module.exports = Node;
