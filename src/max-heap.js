@@ -37,7 +37,7 @@ class MaxHeap {
 
 	size() {
 		if (this.root) {
-		return this.parentNodes.length + 1;}
+		return this.parentNodes.length}
 		else { 
 			return 0;
 		}
