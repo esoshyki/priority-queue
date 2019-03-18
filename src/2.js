@@ -63,6 +63,11 @@ class Node {
 	childCopy.Clone(this);
 	let Parent = this.parent;
 	
+	if (Parent.parent) {
+		if (Parent.parent.left == Parent) { Parent.parent.left = this}
+		else if (Parent.parent.right == Parent) { Parent.parent.right = this};
+	}
+
 	if (Parent.left == this) {
 		this.left = Parent;
 		this.right = Parent.right; 
