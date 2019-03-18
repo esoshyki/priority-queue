@@ -99,22 +99,92 @@ Clone(node) {
 	this.parent = node.parent;
 	}
 }
-const root = new Node(15, 42);
-const left = new Node(42, 15);
-const right = new Node(13, 42);
-const childOfLeft = new Node(13, 34);
-const childOfRight = new Node(0, 1);
 
-root.appendChild(left);
-root.appendChild(right);
-left.appendChild(childOfLeft);
-right.appendChild(childOfRight);
+class MaxHeap {
+	constructor() {
+		this.root = null;
+		this.parentNodes = [];
 
-childOfLeft.swapWithParent();
-childOfRight.swapWithParent();
-console.log(root.left);
-console.log(childOfLeft);
-console.log(root.left == childOfLeft)
-console.log(root.right == childOfRight)
+	}
+
+	push(data, priority) {
+		var nod = new Node(data, priority);
+		this.insertNode(nod);
+		this.shiftNodeUp(nod);
+	}
+
+	pop() {
+		
+	}
+
+	detachRoot() {
+		
+		this.parentNodes.pop();
+		this.root = null;
+		return this.root;
+	}
+
+	restoreRootFromLastInsertedNode(detached) {
+		
+	}
+
+	size() {
+		if (this.root) {
+		return this.parentNodes.length + 1;}
+		else { 
+			return 0;
+		}
+	}
+
+	isEmpty() {
+		return this.size() == 0;
+	}
+
+	clear() {
+		this.root = null;
+		this.parentNodes = [];
+	}
+
+	insertNode(node) {
+		if (this.isEmpty()) {
+			this.root = node;
+			this.parentNodes.push(node)
+			return
+		}
+		else {
+			this.parentNodes.push(node);
+		}
+	}
+
+	shiftNodeUp(node) {
+		
+	}
+
+	shiftNodeDown(node) {
+		
+	}
+}
+
+const h = new MaxHeap();
+const nodes = [ 
+	new Node(0,0),
+	new Node(1,1),
+	new Node(2,2),
+	new Node(3,3),
+	new Node(4,4),
+	new Node(5,5),
+	new Node(6,6),
+]
+
+h.insertNode(nodes[0])
+h.insertNode(nodes[1])
+h.insertNode(nodes[2])
+h.insertNode(nodes[3])
+console.log(h.parentNodes[0] == nodes[0]);
+console.log(h.parentNodes[1] == nodes[1]);
+console.log(h.parentNodes[2] == nodes[2]);
+console.log(h.parentNodes[3] == nodes[3]);
+
+
 
 
