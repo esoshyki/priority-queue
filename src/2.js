@@ -224,6 +224,7 @@ h.shiftNodeUp(h.root.left.left);
 console.log(h.root == newRoot);
 console.log('________________________')
 console.log(correctParentNodesOrderAfterShiftUp[2].priority)
+console.log(h.root.left.priority)
 console.log(h.parentNodes[0] == correctParentNodesOrderAfterShiftUp[0]);
 console.log(h.parentNodes[1] == correctParentNodesOrderAfterShiftUp[1]);
 console.log(h.parentNodes[2] == correctParentNodesOrderAfterShiftUp[2]);
