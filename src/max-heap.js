@@ -55,12 +55,15 @@ class MaxHeap {
 	insertNode(node) {
 		if (this.isEmpty()) {
 			this.root = node;
-			this.parentNodes.push(node)
+			this.parentNodes.push(node);
 			return
 		}
-		else {
-			this.parentNodes[this.parentNodes.length -1].appendChild(node);
+		
+		else { 
+			var index = this.parentNodes.length;
 			this.parentNodes.push(node);
+			var parentIndex = Math.floor((index-1)/2);
+			this.parentNodes[parentIndex].appendChild(node);
 		}
 	}
 

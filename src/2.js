@@ -130,7 +130,7 @@ class MaxHeap {
 
 	size() {
 		if (this.root) {
-		return this.parentNodes.length + 1}
+		return this.parentNodes.length}
 		else { 
 			return 0;
 		}
@@ -148,24 +148,15 @@ class MaxHeap {
 	insertNode(node) {
 		if (this.isEmpty()) {
 			this.root = node;
-			console.log(this.root)
-			console.log(this.parentNodes)
-			console.log(this.size())
+			this.parentNodes.push(node);
 			return
 		}
-		else if (1 <= this.size() <= 2) {
-				this.root.appendChild(node);
-				this.parentNodes.push(node);
-				console.log(this.parentNodes)
-				console.log(this.size())
-			}
-		else {
-/*			const nowNode = this.parentNodes[this.parentNodes.length -1];
-			if (nowNode.parent.left && nowNode.parent.right) {
-			.appendChild(node);
-		}
-			console.log(this.parentNodes[this.parentNodes.length -1].right)
-			this.parentNodes.push(node); */
+		
+		else { 
+			var index = this.parentNodes.length;
+			this.parentNodes.push(node);
+			var parentIndex = Math.floor((index-1)/2);
+			this.parentNodes[parentIndex].appendChild(node);
 		}
 	}
 
@@ -191,16 +182,17 @@ const nodes = [
 ]
 
 h.insertNode(nodes[0])
+console.log(h.parentNodes[0] == nodes[0]);
 h.insertNode(nodes[1])
+console.log(h.parentNodes[0] == nodes[0]);
+console.log(h.parentNodes[1] == nodes[1]);
 h.insertNode(nodes[2])
+console.log(h.parentNodes[0] == nodes[1]);
+console.log(h.parentNodes[1] == nodes[2]);
 h.insertNode(nodes[3])
 h.insertNode(nodes[4])
 h.insertNode(nodes[5])
 h.insertNode(nodes[6])
-/*
-console.log(h.root == nodes[0]);
-console.log(h.root.left == nodes[0]);
-console.log(h.root.left);
-console.log(h.root.right);
 
-*/
+
+
