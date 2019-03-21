@@ -143,7 +143,7 @@ class MaxHeap {
 	}
 
 	insertNode(node) {
-		if (this.isEmpty()) {
+		if (this.parentNodes.length = 0) {
 		  this.root = node;
 			this.parentNodes.push(node);
 
@@ -209,8 +209,9 @@ shiftNodeUp(node) {
 		if (node.parent) {
 		this.parentNodes[parentIndex] = node.parent.parent; 
 	}
-	this.root = node;
+	
 	} 
+	this.root = node;
 	while (node.parent) {
 
 		node.swapWithParent()
@@ -219,11 +220,10 @@ shiftNodeUp(node) {
 
 
 } 
-
-
-
 	shiftNodeDown(node) {
-		if (!node.left || !node) {
+		if (!node) { return }
+
+		if (!node.left) {
 			return
 		}
 
@@ -271,9 +271,9 @@ shiftNodeUp(node) {
 	}
 
 	detachRoot() {
+
 		if (this.parentNodes.indexOf(this.root) >= 0) {
 		this.parentNodes.shift();}
-
 		const Root = this.root;
 		this.root = null;
 		this.currentSize -= 1;
@@ -281,16 +281,19 @@ shiftNodeUp(node) {
 	}
 
 	restoreRootFromLastInsertedNode(detached) {
-		console.log(detached.priority)
 			this.root = this.parentNodes.pop()
 			this.parentNodes.unshift(this.root)
 	
 	}
 }
-let h = new MaxHeap();
-h.push(42, 15);
-h.push(15, 42);
-h.detachRoot();
-
-console.log(h.parentNodes[0].data == 42);
-console.log(h.parentNodes[0].priority == 15);
+	const h = new MaxHeap();
+	h.push(42, 15);
+	h.push(15, 14);
+	h.push(0, 16);
+	h.push(100, 100);
+	console.log(this.root.data)
+	console.log(h.pop() == 100);
+	console.log(h.pop() == 0);
+	console.log(h.pop() == 42);
+	console.log(h.pop() == 15);
+	
