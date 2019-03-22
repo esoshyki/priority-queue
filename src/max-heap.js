@@ -97,99 +97,106 @@ class MaxHeap {
 	}
 	
 	shiftNodeUp(node) {
+		if (!node) {
+			return
+		}
 		if (!node.parent) {
+			this.root = node;
 			return
 		}
-		if (this.parentNodes.length <= 1) {
-			return
-		}
-		if (this.parentNodes.length == 2) { 
-			if (node.parent.left && !node.parent.right) {
-				node.swapWithParent();
-				this.parentNodes.push(this.parentNodes.shift());
-				this.root = node;
-				return
-			}
-			if (node.parent.left && node.parent.right) {
-				var index = this.parentNodes.indexOf(node);
-				this.parentNodes[index] = node.parent;
-				node.swapWithParent();
-				this.root = node
-				return
+
+		if (node.parent.priority < node.priority) {
+			if (this.parentNodes.indexOf(node) >= 0) {
+				var indexNode = this.parentNodes.indexOf(node)
+				this.parentNodes[indexNode] = node.parent
+			}	
+			if (!node.left ) {		
+			if (this.parentNodes.indexOf(node.parent) >= 0) {
+				var indexParent = this.parentNodes.indexOf(node.parent);
+				if (this.parentNodes[this.parentNodes.length -1] == node)
+				console.log(this.parentNodes[this.parentNodes.length -1].priority)
+				this.parentNodes[indexParent] = node;	
 			}
 		}
-
-	if (this.parentNodes.indexOf(node) >= 0) {
-		let nodeIndex = this.parentNodes.indexOf(node)
-		let parentIndex = this.parentNodes.indexOf(node.parent);
-		this.parentNodes[nodeIndex] = node.parent;
-		if (node.parent) {
-		this.parentNodes[parentIndex] = node.parent.parent; 
-	}
-	this.root = node;
-	} 
-	while (node.parent) {
-
-		node.swapWithParent()
-		this.shiftNodeUp(node);
-	}
-
-
-} 
-
-
-
-shiftNodeDown(node) {
-	if (!node) {
-		return
-	}
-
-	if (!node.left) {
-		return
-	}
-
-	if (this.parentNodes.length == 0 || this.parentNodes.length == 1) {
-		return
-	}
-	if (this.parentNodes.length == 2) {
-		if (!this.parentNodes[0].left) {
-			node.left.swapWithParent();
-			this.root = node.parent;
-			this.parentNodes[0] = node;
+			node.swapWithParent()
+			this.shiftNodeUp(node)
 		}
-
 		else {
-			node.left.swapWithParent();
-			this.root = node.parent;
-			this.parentNodes[0] = node.parent;
-			this.parentNodes[1] = node;
-		}
-		return
-	}
-	if (this.parentNodes[0].left) {
-		
-		if ( this.parentNodes[this.parentNodes.length-1] == node.left) {
-			this.parentNodes[0] = node.left;
-			this.parentNodes[this.parentNodes.length-1] = node;
-		}
-		node.left.swapWithParent();
-		if ( !node.parent.parent ) {this.root = node.parent}
-		this.shiftNodeDown(node)
-		return
-	}
-	if (!this.parentNodes[0].left) {
-		if (this.parentNodes[this.parentNodes.length-2].parent == node) {
-			node.left.swapWithParent();
-			this.parentNodes[this.parentNodes.length-2] = node
 			return
 		}
-		node.right.swapWithParent();
-		if (!node.parent.parent) {this.root = node.parent};
-		this.shiftNodeDown(node);
-		return
 	}
 
-}
+
+	shiftNodeDown(node) {
+		if (!node) {
+			return
+		}
+	
+		if (!node.left) {
+			return
+		}
+		if (node.right) {
+		if (node.left.priority > node.priority && node.left.priority > node.right.priority) {
+			console.log('left')
+			if (this.parentNodes.indexOf(node.left) >= 0) {
+				var indexChild = this.parentNodes.indexOf(node.left)
+				this.parentNodes[indexChild] = node
+			}
+	
+			if (this.parentNodes.indexOf(node) >= 0 && this.parentNodes.indexOf(node.left) >= 0) {
+				var indexNode = this.parentNodes.indexOf(node);
+				this.parentNodes[indexNode] = node.left
+			}
+		
+			node.left.swapWithParent()
+			if (!node.parent.parent) {
+				this.root = node.parent
+			}
+	}
+		else if (node.right.priority > node.priority){
+			console.log('right')
+			if (this.parentNodes.indexOf(node.right) >= 0) {
+				var indexChild = this.parentNodes.indexOf(node.right)
+				this.parentNodes[indexChild] = node
+			}
+			if (this.parentNodes.indexOf(node) >= 0) {
+				var indexNode = this.parentNodes.indexOf(node);
+				this.parentNodes[indexNode] = node.right
+			}
+			node.right.swapWithParent()
+			if (!node.parent.parent) {
+				this.root = node.parent
+			}		
+		 }
+		else { 	if (node.left.priority > node.priority) {
+			console.log('left')
+			if (this.parentNodes.indexOf(node.left) >= 0) {
+				var indexChild = this.parentNodes.indexOf(node.left)
+				this.parentNodes[indexChild] = node
+			}
+	
+			if (this.parentNodes.indexOf(node) >= 0 && this.parentNodes.indexOf(node.left) >= 0) {
+				var indexNode = this.parentNodes.indexOf(node);
+				this.parentNodes[indexNode] = node.left
+			}
+			if (!node.left.left) {
+				this.parentNodes[0] = node.left;
+			}
+		
+			node.left.swapWithParent()
+			if (!node.parent.parent) {
+				this.root = node.parent
+			}
+	}
+			 return
+			}
+			console.log('[ ' + h.parentNodes[0].priority + ', ' + h.parentNodes[1].priority + ', ' + h.parentNodes[2].priority + ', ' + h.parentNodes[3].priority + ' ]')
+			this.shiftNodeDown(node);
+		}
+		else {
+	
+		}
+	}
 }
 
 module.exports = MaxHeap;
