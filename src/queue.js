@@ -11,12 +11,21 @@ class PriorityQueue {
  	}
 
 	push(data, priority) {
+		if (this.heap.size() >= this.maxSize) {
+			throw('to much!')
+		}
 		this.heap.push(data, priority);
 
 	}
 
 	shift() {
-
+		if (this.heap.isEmpty()) {
+			throw('empty')
+		}
+		
+		var returnedData = this.heap.pop()
+			
+		return returnedData;
 	}
 
 	size() {
