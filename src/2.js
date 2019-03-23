@@ -1,4 +1,3 @@
-
 class Node {
 	constructor(data, priority) {
 		this.left = null;
@@ -134,15 +133,23 @@ class MaxHeap {
 	}
 
 	restoreRootFromLastInsertedNode(detached) {
-			if (this.parentNodes.length >= 2) {
-			var newNode = this.parentNodes.pop();
-			newNode.left = detached.left;
-			if (detached.left) {
-			detached.left.parent = newNode; }
-			if (detached.right) {
-			detached.right.parent = newNode; }
-			newNode.right = detached.right;
-			this.root = newNode;
+		if (!detached.left) {
+			return
+		}
+		var lastInsertedNode = this.parentNodes.pop()
+		this.root = lastInsertedNode;
+		lastInsertedNode.left = detached.left;
+		lastInsertedNode.right = detached.right;
+		lastInsertedNode.parent = null;
+		if (detached.left) { lastInsertedNode.left.parent = lastInsertedNode};
+		if (detached.right) { lastInsertedNode.right.parent = lastInsertedNode};
+		console.log(h.parentNodes.map(n=>n.priority))
+		if (this.size() > 3 ) {
+			return
+		}  
+		if (this.size() == 3 && this.parentNodes.length == 2) {
+
+			return
 		}
 }
 
@@ -202,28 +209,32 @@ class MaxHeap {
 		}
 		if (!node.parent) {
 			this.root = node;
+			
 			return
 		}
 
 		if (node.parent.priority < node.priority) {
-			if (this.parentNodes.indexOf(node) >= 0) {
-				var indexNode = this.parentNodes.indexOf(node)
-				this.parentNodes[indexNode] = node.parent
-			}	
-			if (!node.left ) {		
-			if (this.parentNodes.indexOf(node.parent) >= 0) {
-				var indexParent = this.parentNodes.indexOf(node.parent);
-				if (this.parentNodes[this.parentNodes.length -1] == node)
-				console.log(this.parentNodes[this.parentNodes.length -1].priority)
-				this.parentNodes[indexParent] = node;	
+			if (this.parentNodes.indexOf(node.parent) >= 0 && this.parentNodes.indexOf(node) >= 0) {
+				var indexup = this.parentNodes.indexOf(node.parent);
+				var indexdown = this.parentNodes.indexOf(node);
+				this.parentNodes[indexup] = node;
+				this.parentNodes[indexdown] = node.parent
+			} 
+			else if (this.parentNodes.indexOf(node.parent) < 0 && this.parentNodes.indexOf(node) >= 0) {
+				var index = this.parentNodes.indexOf(node);
+				this.parentNodes[index] = node.parent
 			}
-		}
-			node.swapWithParent()
-			this.shiftNodeUp(node)
+
+			
+			
+			
 		}
 		else {
 			return
 		}
+
+		node.swapWithParent()
+		this.shiftNodeUp(node)
 	}
 
 
@@ -231,98 +242,53 @@ shiftNodeDown(node) {
 	if (!node) {
 		return
 	}
-
 	if (!node.left) {
 		return
 	}
+	if (!node.right) {
+		if (node.priority < node.left.priority) {
+			node.left.swapWithParent();
+			this.parentNodes.push(this.parentNodes.shift())
+			return
+		}
+	}
+	if (node.parent) {
+		if (node.parent.parent) {
+			this.root = node.parent;
+		}
+	}
+	
 	if (node.right) {
-	if (node.left.priority > node.priority && node.left.priority > node.right.priority) {
-		if (this.parentNodes.indexOf(node.left) >= 0) {
-			var indexChild = this.parentNodes.indexOf(node.left)
-			this.parentNodes[indexChild] = node
+		if (node.left.priority > node.priority && node.right.priority > node.priority) {
+			if (node.left.priority > node.right.priority) {
+				node.left.swapWithParent();
+			}
+			else {
+				node.right.swapWithParent()
+			}
 		}
-
-		if (this.parentNodes.indexOf(node) >= 0 && this.parentNodes.indexOf(node.left) >= 0) {
-			var indexNode = this.parentNodes.indexOf(node);
-			this.parentNodes[indexNode] = node.left
+		else if (node.left.priority > node.priority && node.right.priority < node.priority) {
+			node.left.swapWithParent()
 		}
-	
-		node.left.swapWithParent()
-		if (!node.parent.parent) {
-			this.root = node.parent
+		else if (node.right.priority < node.priority && node.right.priority > node.priority) {
+			node.right.swapWithParent()
 		}
-}
-	else if (node.right.priority > node.priority){
-		if (this.parentNodes.indexOf(node.right) >= 0) {
-			var indexChild = this.parentNodes.indexOf(node.right)
-			this.parentNodes[indexChild] = node
+		else if (node.left.priority < node.priority && node.right.priority < node.priority) {
+			return
 		}
-		if (this.parentNodes.indexOf(node) >= 0) {
-			var indexNode = this.parentNodes.indexOf(node);
-			this.parentNodes[indexNode] = node.right
-		}
-		node.right.swapWithParent()
-		if (!node.parent.parent) {
-			this.root = node.parent
-		}		
-	 }
-	else { 	if (node.left.priority > node.priority) {
-		if (this.parentNodes.indexOf(node.left) >= 0) {
-			var indexChild = this.parentNodes.indexOf(node.left)
-			this.parentNodes[indexChild] = node
-		}
-
-		if (this.parentNodes.indexOf(node) >= 0 && this.parentNodes.indexOf(node.left) >= 0) {
-			var indexNode = this.parentNodes.indexOf(node);
-			this.parentNodes[indexNode] = node.left
-		}
-		if (!node.left.left) {
-			this.parentNodes[0] = node.left;
-		}
-	
-		node.left.swapWithParent()
-		if (!node.parent.parent) {
-			this.root = node.parent
-		}
-}
-		 return
-		}
-			this.shiftNodeDown(node);
 	}
-	else {
-
-	}
+	this.shiftNodeDown(node)
+		
 }
 }
+const h = new MaxHeap();
+h.push(42, 15);
+h.push(15, 14);
+h.push(0, 16);
+h.push(100, 100);
 
-h = new MaxHeap();
-h.root = new Node(0, 3);
-h.root.appendChild(new Node(1, 20));
-h.root.appendChild(new Node(2, 7));
-h.root.left.appendChild(new Node(3, 5));
 
-/**
-3                        20
-/  \                      /  \
-20    7  - shift down ->   5    7
-/                          /
-5                          3
-**/
-
-h.parentNodes = [
-	h.root.left,
-	h.root.right,
-	h.root.left.left,
-];
-
-const correctParentNodesOrderAfterShiftUp = [
-	h.root.left.left,
-	h.root.right,
-	h.root
-]
-
-h.shiftNodeDown(h.root);
-
-console.log(h.parentNodes[0] == correctParentNodesOrderAfterShiftUp[0]);
-console.log(h.parentNodes[1] == correctParentNodesOrderAfterShiftUp[1]);
-console.log(h.parentNodes[2] == correctParentNodesOrderAfterShiftUp[2]);
+console.log(h.pop() == 100);
+console.log(h.pop() == 0);
+console.log(h.pop() == 42);
+console.log(h.pop() == 15);
