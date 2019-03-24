@@ -17,7 +17,9 @@ class Node {
 		else  { 
 		this.right = node;	
 		}
+		if (node) {
 		node.parent = this;
+	}
 	}
 
 	removeChild(node) {
@@ -30,7 +32,9 @@ class Node {
 		else if (node.parent != this) {
 			throw('Node is not child of it');
 		};
+		if (node) {
 		node.parent =null;
+	}
 }
 		
 	remove() {
